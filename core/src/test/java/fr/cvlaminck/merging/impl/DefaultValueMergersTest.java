@@ -1,4 +1,4 @@
-package fr.cvlaminck.merging.impl.dflt;
+package fr.cvlaminck.merging.impl;
 
 import org.junit.Before;
 import org.junit.Test;
