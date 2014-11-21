@@ -1,6 +1,20 @@
+/**
+ * Copyright 2014 Cyril Vlaminck
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package fr.cvlaminck.merging.samples.contacts;
 
-import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -14,7 +28,6 @@ import fr.cvlaminck.merging.impl.mergers.value.object.UseRightIfLeftIsNullObject
 import fr.cvlaminck.merging.impl.strategy.MutableObjectMergingStrategy;
 import fr.cvlaminck.merging.samples.contacts.entities.Contact;
 
-import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.util.Collection;
 
@@ -46,7 +59,8 @@ public class Application {
         System.out.println("/*             Entry : John Doe            */");
         System.out.println("/*-----------------------------------------*/");
         objectMapper.writeValue(System.out, entry1);
-        System.out.println(); System.out.println();
+        System.out.println();
+        System.out.println();
 
         /**
          * The second entry considered as duplicate contains some phone numbers
@@ -61,7 +75,8 @@ public class Application {
         System.out.println("/*           Duplicated : John Doe         */");
         System.out.println("/*-----------------------------------------*/");
         objectMapper.writeValue(System.out, entry2);
-        System.out.println(); System.out.println();
+        System.out.println();
+        System.out.println();
 
         /**
          * Before doing any merge operation, we need to configure the merging library.
@@ -75,8 +90,8 @@ public class Application {
          * you can use in your application.
          */
         ValueMergers valueMergers = new DefaultValueMergers(); //TODO
-        valueMergers.registerFieldMerger(new UseRightIfLeftIsNullObjectValueMerger());
-        valueMergers.registerFieldMerger(new AddInRightCollectionValueMerger());
+        valueMergers.registerValueMerger(new UseRightIfLeftIsNullObjectValueMerger());
+        valueMergers.registerValueMerger(new AddInRightCollectionValueMerger());
 
         /**
          * Then we instantiate the core element of the library.

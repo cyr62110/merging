@@ -1,3 +1,5 @@
 include ':core'
 include ':samples/contacts'
 
+project(':core').name = 'merging-core'
+

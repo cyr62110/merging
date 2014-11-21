@@ -1,5 +1,5 @@
 dependencies {
-    compile project(':core')
+    compile project(':merging-core')
 
     compile 'com.fasterxml.jackson.core:jackson-databind:2.3.3'
 }

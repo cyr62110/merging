@@ -1,6 +1,40 @@
+apply plugin: 'maven-publish'
+
+group = 'fr.cvlaminck.merging'
+version = '1.0'
+
 dependencies {
     compile 'org.apache.commons:commons-lang3:3.3.2'
 
     testCompile 'junit:junit:4.10'
     testCompile 'org.mockito:mockito-core:1.9.5'
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+
+            pom.withXml {
+                buildPom(asNode())
+            }
+        }
+    }
+}
+
+def buildPom(Node rootNode) {
+    //Description
+    rootNode.appendNode('description',
+            'Java library for merging objects')
+    //License
+    Node licencesNode = rootNode.appendNode('licenses')
+    Node licenceNode = licencesNode.appendNode('license')
+    licenceNode.appendNode('name', 'Apache License, Version 2.0')
+    licenceNode.appendNode('url', 'http://www.apache.org/licenses/LICENSE-2.0.txt')
+    licenceNode.appendNode('distribution', 'repo')
+    //Developers
+    Node developersNode = rootNode.appendNode('developers')
+    Node developerNode = developersNode.appendNode('developer')
+    developerNode.appendNode('id', 'cvlaminck')
+    developerNode.appendNode('name', 'Cyril Vlaminck')
 }

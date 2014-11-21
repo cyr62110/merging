@@ -1,25 +1,30 @@
+/**
+ * Copyright 2014 Cyril Vlaminck
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package fr.cvlaminck.merging.impl;
 
+import fr.cvlaminck.merging.api.ValueMerger;
+import fr.cvlaminck.merging.api.ValueMergers;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
-
-import fr.cvlaminck.merging.api.ValueMerger;
-import fr.cvlaminck.merging.api.ValueMergers;
+import java.util.*;
 
 public class DefaultValueMergers
-    implements ValueMergers {
+        implements ValueMergers {
 
     /**
      * List of type that are supported by register mergers.
@@ -39,7 +44,7 @@ public class DefaultValueMergers
         this.registeredMergerTypes = new TreeSet<Class<?>>(new Comparator<Class<?>>() {
             @Override
             public int compare(Class<?> c1, Class<?> c2) {
-                if(c2.isAssignableFrom(c1))
+                if (c2.isAssignableFrom(c1))
                     return -1;
                 return 1;
             }
@@ -56,7 +61,7 @@ public class DefaultValueMergers
         while (merger == null && registeredMergerTypeIterator.hasNext()) {
             currentType = registeredMergerTypeIterator.next();
             //If the field is of or of a subclass the current type
-            if(currentType.isAssignableFrom(fieldType)) {
+            if (currentType.isAssignableFrom(fieldType)) {
                 //We try to retrieve the associated merger
                 //If this merger do not exists, we continue in the list.
                 key.setLeft(currentType);
@@ -67,9 +72,9 @@ public class DefaultValueMergers
     }
 
     @Override
-    public void registerFieldMerger(ValueMerger valueMerger) {
+    public void registerValueMerger(ValueMerger valueMerger) {
         //If the fieldMerger is already registered, we ignore
-        if(mergers.containsValue(valueMerger))
+        if (mergers.containsValue(valueMerger))
             return;
         //Otherwise, we register it
         registeredMergerTypes.add(valueMerger.getType());
@@ -78,13 +83,13 @@ public class DefaultValueMergers
     }
 
     @Override
-    public void unregisterFieldMerger(Class<?> mergerType, String mergingStrategy) {
+    public void unregisterValueMerger(Class<?> mergerType, String mergingStrategy) {
         Pair<Class<?>, String> key = new ImmutablePair<Class<?>, String>(mergerType, mergingStrategy);
         mergers.remove(key);
     }
 
     @Override
-    public void unregisterAllFieldMergers() {
+    public void unregisterAllValueMergers() {
         registeredMergerTypes.clear();
         mergers.clear();
     }
