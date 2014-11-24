@@ -15,13 +15,16 @@
  */
 package fr.cvlaminck.merging.impl.strategy;
 
+import fr.cvlaminck.merging.api.CloneableObjectMergingStrategy;
+
 import java.util.*;
 
 /**
  * Implementation of ObjectMergingStrategy interface.
  */
 public class MutableObjectMergingStrategy
-        extends AbstractObjectMergingStrategy {
+        extends AbstractObjectMergingStrategy
+        implements CloneableObjectMergingStrategy {
 
     /**
      * Map containing all default strategies and the types they are
@@ -72,7 +75,7 @@ public class MutableObjectMergingStrategy
 
     @Override
     public String getDefaultStrategyForType(Class<?> type) {
-        Iterator<Map.Entry<Class<?>, String>> defaultStrategyIterator = defaultStrategies.entrySet().iterator();
+        final Iterator<Map.Entry<Class<?>, String>> defaultStrategyIterator = defaultStrategies.entrySet().iterator();
         String strategy = null;
         while (strategy == null && defaultStrategyIterator.hasNext()) {
             Map.Entry<Class<?>, String> currentEntry = defaultStrategyIterator.next();
@@ -84,4 +87,15 @@ public class MutableObjectMergingStrategy
         return strategy;
     }
 
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        final MutableObjectMergingStrategy clone = new MutableObjectMergingStrategy(getObject());
+        //Clone specific strategies
+        for(Map.Entry<String, String> specificStrategy : specificStrategies.entrySet())
+            clone.setSpecificStrategyForField(new String(specificStrategy.getKey()), new String(specificStrategy.getValue()));
+        //Clone default strategies
+        for(Map.Entry<Class<?>, String> defaultStrategy : defaultStrategies.entrySet())
+            clone.setDefaultStrategyForType(defaultStrategy.getKey(), new String(defaultStrategy.getValue()));
+        return clone;
+    }
 }

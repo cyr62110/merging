@@ -77,4 +77,18 @@ public class MutableObjectMergingStrategyTest {
         assertNull(mergingStrategy.getDefaultStrategyForType(Object.class));
     }
 
+    @Test
+    public void testClone() throws CloneNotSupportedException {
+        mergingStrategy.setSpecificStrategyForField("A", "A");
+        mergingStrategy.setDefaultStrategyForType(Object.class, "B");
+
+        MutableObjectMergingStrategy clone = (MutableObjectMergingStrategy) mergingStrategy.clone();
+
+        assertEquals(mergingStrategy.getObject(), clone.getObject());
+        assertEquals(mergingStrategy.getSpecificStrategyForField("A"), clone.getSpecificStrategyForField("A"));
+        assertNotSame(mergingStrategy.getSpecificStrategyForField("A"), clone.getSpecificStrategyForField("A"));
+        assertEquals(mergingStrategy.getDefaultStrategyForType(Object.class), clone.getDefaultStrategyForType(Object.class));
+        assertNotSame(mergingStrategy.getDefaultStrategyForType(Object.class), clone.getDefaultStrategyForType(Object.class));
+    }
+
 }

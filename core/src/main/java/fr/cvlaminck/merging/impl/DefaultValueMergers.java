@@ -23,6 +23,11 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
 
+/**
+ * Default implementation of ValueMergers interface.
+ *
+ * @since 1.0
+ */
 public class DefaultValueMergers
         implements ValueMergers {
 
